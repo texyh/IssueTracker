@@ -16,6 +16,7 @@ using IssueTracker.Core.Interfaces;
 using IssueTracker.Service;
 using IssueTracker.Data.Repository;
 using IssueTracker.Data.DbContexts;
+using IssueTracker.Web.Providers;
 
 namespace IssueTracker.Web
 {
@@ -60,6 +61,7 @@ namespace IssueTracker.Web
             services.AddTransient<IIssueRepository, IssueRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserContext, UserContext>();
             services.AddDbContext<IssueTrackerDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("IssueTrackerConnection"));
             });

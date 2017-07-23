@@ -14,7 +14,6 @@ namespace IssueTracker.Data.Repository
     public class IssueRepository : IIssueRepository
     {
         private readonly IssueTrackerDbContext _dbContext;
-
         public IssueRepository(IssueTrackerDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -54,6 +53,7 @@ namespace IssueTracker.Data.Repository
             await _dbContext.SaveChangesAsync();
 
             return issue;
+
         }
     }
 }

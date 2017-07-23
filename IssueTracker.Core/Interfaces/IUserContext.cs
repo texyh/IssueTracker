@@ -6,13 +6,13 @@ namespace IssueTracker.Core.Interfaces
 {
     public interface IUserContext
     {
-        string Email { get; }
+        //string Email { get; }
 
-        string FirstName { get; }
+        //string FirstName { get; }
 
-        string LastName { get; }
+        //string LastName { get; }
 
-        string UserId { get; }
+        //string UserId { get; }
 
         //IEnumerable<Guid> GetMemberIdsInRole(UserRole role);
 
@@ -21,5 +21,9 @@ namespace IssueTracker.Core.Interfaces
         //Task<bool> IsInRole(string userId, UserRole role);
 
         //Task<bool> IsAdmin();
+
+        Guid GetUserId();
+
+        string GetUserEmail();
     }
 }

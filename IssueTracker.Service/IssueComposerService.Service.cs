@@ -11,10 +11,15 @@ namespace IssueTracker.Service
     public class IssueComposerService : IIssueComposerService
     {
         private readonly IIssueRepository _repository;
+        private readonly IUserContext _userContext;
 
-        public IssueComposerService(IIssueRepository repository)
+        public IssueComposerService(
+            IIssueRepository repository,
+            IUserContext userContext
+            )
         {
             _repository = repository;
+            _userContext = userContext;
         }
 
         public async Task<IEnumerable<Issue>> GetClosedIssues()
@@ -24,6 +29,11 @@ namespace IssueTracker.Service
 
         public async Task<Issue> GetIssue(long issueId)
         {
+            if (issueId == default(long))
+            {
+                return new Issue();
+            }
+
             return await _repository.GetIssue(issueId);
         }
 
@@ -34,15 +44,18 @@ namespace IssueTracker.Service
 
         public async Task<Issue> SaveIssue(Issue issue)
         {
+            var userId = _userContext.GetUserId();
+            issue.ModifiedById = userId;
+            issue.Modified = DateTime.UtcNow;
+
             if (issue.Id ==  default(long))
             {
-                issue.Status = IssueStatusEnum.Open; 
+                issue.Status = IssueStatusEnum.Open;
                 issue.Created = DateTime.UtcNow;
-                issue.Modified = DateTime.UtcNow;
+                issue.CreatorId = userId;
                 return await _repository.SaveIssue(issue);
             }
-
-            issue.Modified = DateTime.UtcNow;
+            
             return await _repository.UpdateIssue(issue);
         }
     }
