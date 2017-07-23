@@ -1,0 +1,7 @@
+language: csharp
+dist: xenial
+sudo: required
+mono: none
+script:
+    - chmod +x build.sh
+    - ./build.sh --quiet verify
