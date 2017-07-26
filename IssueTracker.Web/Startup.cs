@@ -48,6 +48,11 @@ namespace IssueTracker.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IssueTrackerConnection")));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.SignIn.RequireConfirmedEmail = true;
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -62,6 +67,7 @@ namespace IssueTracker.Web
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserContext, UserContext>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddDbContext<IssueTrackerDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("IssueTrackerConnection"));
             });

@@ -12,6 +12,7 @@
     <UserSecretsId>aspnet-IssueTracker.Web-11d897e7-6d5d-4e53-93d2-5e6124b3d7d5</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="1.16.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
@@ -37,6 +38,9 @@
     <ProjectReference Include="..\IssueTracker.Core\IssueTracker.Core.csproj" />
     <ProjectReference Include="..\IssueTracker.Data\IssueTracker.Data.csproj" />
     <ProjectReference Include="..\IssueTracker.Service\IssueTracker.Service.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Issue\" />
   </ItemGroup>
 
 </Project>

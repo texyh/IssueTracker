@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Issues]
 (
 	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY, 
-    [Descripton] NVARCHAR(MAX) NOT NULL, 
+    [Description] NVARCHAR(MAX) NOT NULL, 
     [Priority] INT NOT NULL, 
     [DepartmentId] BIGINT NOT NULL, 
     [Status] INT NOT NULL, 

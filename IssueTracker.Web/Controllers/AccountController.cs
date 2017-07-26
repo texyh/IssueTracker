@@ -14,6 +14,7 @@ using IssueTracker.Web.Models.AccountViewModels;
 using IssueTracker.Web.Services;
 using IssueTracker.Core.Interfaces;
 using IssueTracker.Core.Models;
+using IssueTracker.Core.Helpers;
 
 namespace IssueTracker.Web.Controllers
 {
@@ -27,6 +28,7 @@ namespace IssueTracker.Web.Controllers
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -35,6 +37,7 @@ namespace IssueTracker.Web.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             IUserService userService,
+            IEmailService emailService,
             ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
@@ -43,6 +46,7 @@ namespace IssueTracker.Web.Controllers
             _emailSender = emailSender;
             _userService = userService;
             _smsSender = smsSender;
+            _emailService = emailService;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -69,12 +73,28 @@ namespace IssueTracker.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                //var user = await _userManager.FindByEmailAsync(model.Email);
+                //if (!await _userManager.IsEmailConfirmedAsync(user))
+                //{
+                //    return View("ConfirmEmail");
+                //}
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty,
+                                      "You must have a confirmed email to log in.");
+                        return View(model);
+                    }
+                }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+                    
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -123,10 +143,11 @@ namespace IssueTracker.Web.Controllers
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        //$"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    
                     var userInfo = new User
                     {
                         Id = Guid.Parse(user.Id),
@@ -136,9 +157,18 @@ namespace IssueTracker.Web.Controllers
                     };
 
                     await _userService.SaveUser(userInfo);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _emailService.SendAsync(new Email
+                    {
+                        Subject = "Confirm your account",
+                        Body = $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>",
+                        Recipients = new string[] { model.Email },
+                        Sender = "no-reply@Issuetracker.com"
+
+                    });
+
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return View("ConfirmEmail");
                 }
                 AddErrors(result);
             }
@@ -292,11 +322,18 @@ namespace IssueTracker.Web.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
                 //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
                 //return View("ForgotPasswordConfirmation");
+                await _emailService.SendAsync(new Email
+                {
+                    Sender = "no-reply@IssueTracker.com",
+                    Body = $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>",
+                    Recipients = new string[] { model.Email },
+                    Subject = "Reset Password",
+                });
             }
 
             // If we got this far, something failed, redisplay form
