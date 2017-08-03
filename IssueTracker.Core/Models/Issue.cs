@@ -20,9 +20,7 @@ namespace IssueTracker.Core.Models
         public IssueStatusEnum Status { get; set; }
 
         public Guid? ResolverId { get; set; }
-
-        public Guid ReporterId { get; set; }
-
+        
         public string Comment { get; set; }
 
         public DateTime Created { get; set; }
@@ -40,7 +38,6 @@ namespace IssueTracker.Core.Models
         public virtual Department Department { get; set; }
 
         public virtual User Resolver { get; set; }
-
-        public virtual User Reporter { get; set; }
+        
     }
 }

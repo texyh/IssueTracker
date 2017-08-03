@@ -35,6 +35,8 @@ namespace IssueTracker.Data.Repository
         {
             return await _dbContext.Issues
                 .Where(x => (x.Status == IssueStatusEnum.Open || x.Status == IssueStatusEnum.InProgress))
+                .Include(x => x.Department)
+                .Include(x => x.Creator)
                 .ToListAsync();
         }
 

@@ -10,6 +10,8 @@ namespace IssueTracker.Core.Models
     {
         public long Id { get; set; }
 
+        public string Name { get; set; }
+
         public Guid AdminId { get; set; }
 
         public DateTime Created { get; set; }

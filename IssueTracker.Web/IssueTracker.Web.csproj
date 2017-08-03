@@ -40,7 +40,7 @@
     <ProjectReference Include="..\IssueTracker.Service\IssueTracker.Service.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Issue\" />
+    <Folder Include="Views\Issues\" />
   </ItemGroup>
 
 </Project>

@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace IssueTracker.Core.Interfaces
 {
-    public interface IDepartmentComposerService
+    public interface IDepartmentRepository
     {
         Task<IEnumerable<Department>> GetDepartments();
 
         Task<User> GetDepartmentAdmin(long id);
 
-        Task<Department> SaveDepartment(Department department);
+        Task<Department> CreateDepartment(Department department);
 
-        Task<Department> GetDepartmentAsync(long id);
+        Task<Department> UpdateDepartment(Department department);
+
+        Task<Department> GetDepartment(long id);
     }
 }

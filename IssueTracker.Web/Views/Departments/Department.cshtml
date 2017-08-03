@@ -1,0 +1,31 @@
+@model Department
+@{
+    ViewData["Title"] = "Department";
+}
+
+<h2>Department</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken();
+
+    <div class="row">
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+
+        @*<div class="form-group col-md-4">
+            @Html.LabelFor(x => x.DepartmentId)
+            @Html.DropDownListFor(x => x.DepartmentId, selectlist, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.DepartmentId)
+        </div>*@
+    </div>
+
+    
+    @Html.TextBox("Submit", "submit", null, new { @class = "btn btn-primary", type = "submit" })
+    @Html.ActionLink("Cancel", "Index", null, null, new { @class = "btn btn-default" })
+
+}

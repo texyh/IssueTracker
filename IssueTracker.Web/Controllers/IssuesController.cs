@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IssueTracker.Core.Interfaces;
 using IssueTracker.Core.Models;
+using IssueTracker.Core.ViewModels;
 
 namespace IssueTracker.Web.Controllers
 {
-    public class IssueController : Controller
+    public class IssuesController : Controller
     {
         private readonly IIssueComposerService _issueService;
 
-        public IssueController(IIssueComposerService service)
+        public IssuesController(IIssueComposerService service)
         {
             _issueService = service;
         }
@@ -33,14 +34,14 @@ namespace IssueTracker.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Issue(Issue issue)
+        public async Task<ActionResult> Issue(SaveIssueViewModel issue)
         {
             if (!ModelState.IsValid)
             {
                 return View(issue);
             }
 
-            await _issueService.SaveIssue(issue);
+            await _issueService.SaveIssue(issue.ToIssue());
             return RedirectToAction("Index");
         }
 

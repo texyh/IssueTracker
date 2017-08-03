@@ -1,4 +1,5 @@
 ﻿using IssueTracker.Core.Models;
+using IssueTracker.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace IssueTracker.Core.Interfaces
 
         Task<IEnumerable<Issue>> GetClosedIssues();
 
-        Task<Issue> GetIssue(long issueId);
+        Task<SaveIssueViewModel> GetIssue(long issueId);
 
         Task<Issue> SaveIssue(Issue issue);
     }

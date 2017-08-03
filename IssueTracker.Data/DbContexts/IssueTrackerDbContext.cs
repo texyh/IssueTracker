@@ -25,7 +25,6 @@ namespace IssueTracker.Data.DbContexts
             var issueEntry = modelBuilder.Entity<Issue>();
             issueEntry.ToTable("Issues");
             issueEntry.HasKey(x => x.Id);
-            issueEntry.HasOne(x => x.Reporter).WithMany().HasForeignKey(x => x.ReporterId);
             issueEntry.HasOne(x => x.Resolver).WithMany().HasForeignKey(x => x.ResolverId);
             issueEntry.HasOne(x => x.Department).WithMany().HasForeignKey(x => x.DepartmentId);
 
