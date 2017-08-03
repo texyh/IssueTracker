@@ -70,6 +70,7 @@ namespace IssueTracker.Web
             services.AddTransient<IDepartmentComposerService, DepartmentComposerService>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IIssueMailer, IssueMailer>();
             services.AddDbContext<IssueTrackerDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("IssueTrackerConnection"));
             });

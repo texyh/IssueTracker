@@ -16,6 +16,6 @@ namespace IssueTracker.Core.Interfaces
 
         Task<Department> UpdateDepartment(Department department);
 
-        Task<Department> GetDepartment(long id);
+        Task<Department> GetDepartment(long id, bool includeAdmin = false);
     }
 }

@@ -50,9 +50,16 @@ namespace IssueTracker.Data.Repository
             return department;
         }
 
-        public async Task<Department> GetDepartment(long id)
+        public async Task<Department> GetDepartment(long id, bool includeAdmin = false)
         {
-            return await _dbContext.Departments.FindAsync(id);
+            var department = _dbContext.Departments.AsQueryable();
+
+            if (includeAdmin)
+            {
+                department = department.Include(x => x.Admin);
+            }
+
+            return await department.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

@@ -11,5 +11,7 @@ namespace IssueTracker.Core.Interfaces
         Task<IEnumerable<User>> GetUsers();
 
         Task<User> SaveUser(User user);
+
+        Task<User> GetUser(Guid userId);
     }
 }

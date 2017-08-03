@@ -14,16 +14,19 @@ namespace IssueTracker.Service
         private readonly IIssueRepository _issueRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IUserContext _userContext;
+        private readonly IIssueMailer _issueMailer;
 
         public IssueComposerService(
             IIssueRepository repository,
             IUserContext userContext,
+            IIssueMailer issueMailer,
             IDepartmentRepository departmentRepository
             )
         {
             _issueRepository = repository;
             _userContext = userContext;
             _departmentRepository = departmentRepository;
+            _issueMailer = issueMailer;
         }
 
         public async Task<IEnumerable<Issue>> GetClosedIssues()
@@ -65,6 +68,7 @@ namespace IssueTracker.Service
                 issue.Status = IssueStatusEnum.Open;
                 issue.Created = DateTime.UtcNow;
                 issue.CreatorId = userId;
+                await _issueMailer.EmailNewIssue(issue.DepartmentId);
                 return await _issueRepository.SaveIssue(issue);
             }
 

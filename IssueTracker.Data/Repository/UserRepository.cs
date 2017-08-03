@@ -18,6 +18,11 @@ namespace IssueTracker.Data.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<User> GetUser(Guid userId)
+        {
+            return await _dbContext.Users.FindAsync(userId);
+        }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await _dbContext.Users.ToListAsync();

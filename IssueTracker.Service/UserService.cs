@@ -25,5 +25,12 @@ namespace IssueTracker.Service
         {
             return await _repository.SaveUser(user);
         }
+
+        public async Task<User> GetUser(Guid userId)
+        {
+            return await _repository.GetUser(userId);
+        }
+
+      
     }
 }
