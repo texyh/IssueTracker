@@ -1,0 +1,31 @@
+@model IEnumerable<Issue>
+
+@{ 
+
+}
+
+                      <table class="table table-hover table-striped">
+                          <thead>
+                              <tr>
+                                  <th>Description</th>
+                                  <th>Reporter</th>
+                                  <th>Department</th>
+                                  <th>Status</th>
+                                  <th>Priority</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              @foreach (var issue in Model)
+            {
+                                  <tr>
+                                      <td>@Html.ActionLink(@issue.Description, "Issue", new { id = issue.Id }) </td>
+                                      <td>@issue.Creator.FullName</td>
+                                      <td>@issue.Department.Name</td>
+                                      <td>@issue.Status.ToString()</td>
+                                      <td>@issue.Priority.ToString()</td>
+                                  </tr>
+
+                              }
+                          </tbody>
+                      </table>
+                      

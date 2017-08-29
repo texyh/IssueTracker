@@ -6,29 +6,26 @@
 
 <h2>Index</h2>
 <div class="pull-right">
-    @Html.ActionLink("New Issue", "Issue", new { id = 0}, new { @class= "btn btn-primary" })
+    @Html.ActionLink("New Issue", "Issue", new { id = 0 }, new { @class = "btn btn-primary" })
 </div>
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Reporter</th>
-            <th>Department</th>
-            <th>Status</th>
-            <th>Priority</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var issue in Model)
-        {
-            <tr>
-                <td>@Html.ActionLink(@issue.Description, "Issue", new { id = issue.Id}) </td>
-                <td>@issue.Creator.FullName</td>
-                <td>@issue.Department.Name</td>
-                <td>@issue.Status.ToString()</td>
-                <td>@issue.Priority.ToString()</td>
-            </tr>
 
-        }
-    </tbody>
-</table>
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active" id="my-issues"><a href="/Issues/Index/?ispartial=true">My Issues</a></li>
+    <li role="presentation" id="raised-issues"><a href="/Issues/OpenIssues">Raised Issues</a></li>
+    <li role="presentation" id="closed-issues"><a href="/Issues/ClosedIssues">Closed Issues</a></li>
+</ul>
+
+<div class="issue-table">
+   @Html.Partial("IssueTable", Model)
+   </div>
+<environment names="Development">
+    <script src="~/App/Issue.js"></script>
+</environment>
+<environment names="Development">
+    <script src="~/js/issue.min.js"></script>
+</environment>
+@section Scripts {
+    <script>
+        $(app.issue.init)
+    </script>
+}

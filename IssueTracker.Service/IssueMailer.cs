@@ -64,7 +64,7 @@ namespace IssueTracker.Service
             var msg = new StringBuilder();
             msg.AppendFormat("Hi {0}", department.Admin.FirstName);
             msg.AppendLine();
-            msg.AppendFormat("An Issue Regarding Your Department Has been Raised,/" +
+            msg.AppendFormat("An Issue That needs the attention of your Department Has been Raised,/" +
                 "Kindly Assign a member of your department to resolve it.");
             msg.AppendLine();
             msg.AppendFormat("Thanks");

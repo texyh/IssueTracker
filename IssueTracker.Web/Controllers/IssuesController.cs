@@ -19,9 +19,14 @@ namespace IssueTracker.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(bool isPartial = false)
         {
-            var issues = await _issueService.GetOpenIssues();
+            var issues = await _issueService.CurentUserIssues();
+            if (isPartial)
+            {
+                return PartialView("IssueTable", issues);
+            }
+
             return View(issues);
         }
 
@@ -30,6 +35,20 @@ namespace IssueTracker.Web.Controllers
         {
             var issue = await _issueService.GetIssue(id);
             return View(issue);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ClosedIssues()
+        {
+            var issues = await _issueService.GetClosedIssues();
+            return PartialView("IssueTable", issues);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> OpenIssues()
+        {
+            var issues = await _issueService.GetOpenIssues();
+            return PartialView("IssueTable", issues);
         }
 
         [HttpPost]

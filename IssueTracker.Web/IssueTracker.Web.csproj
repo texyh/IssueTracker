@@ -12,6 +12,7 @@
     <UserSecretsId>aspnet-IssueTracker.Web-11d897e7-6d5d-4e53-93d2-5e6124b3d7d5</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.4.337" />
     <PackageReference Include="MailKit" Version="1.16.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
@@ -41,6 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Issues\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\App\Issue.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="bundleconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -29,6 +29,12 @@ namespace IssueTracker.Service
             _issueMailer = issueMailer;
         }
 
+        public async Task<IEnumerable<Issue>> CurentUserIssues()
+        {
+            var userId = _userContext.GetUserId();
+            return await _issueRepository.CurrentUserIssues(userId);
+        }
+
         public async Task<IEnumerable<Issue>> GetClosedIssues()
         {
             return await _issueRepository.GetClosedIssues(); 

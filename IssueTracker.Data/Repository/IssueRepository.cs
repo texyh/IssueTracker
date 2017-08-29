@@ -19,10 +19,23 @@ namespace IssueTracker.Data.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<Issue>> CurrentUserIssues(Guid userId)
+        {
+            return await _dbContext.Issues
+                        .Where(x => x.CreatorId == userId)
+                        .Include(x => x.Creator)
+                        .Include(x => x.Department)
+                        .OrderByDescending(x => x.Modified.Date)
+                        .ToListAsync();
+        }
+
         public async Task<IEnumerable<Issue>> GetClosedIssues()
         {
             return await _dbContext.Issues
                 .Where(x => x.Status == IssueStatusEnum.Resolved)
+                .Include(x => x.Department)
+                .Include(x => x.Creator)
+                .OrderByDescending(x => x.Modified.Date)
                 .ToListAsync();
         }
 
@@ -30,13 +43,14 @@ namespace IssueTracker.Data.Repository
         {
             return await _dbContext.Issues.FindAsync(id);
         }
-
+ 
         public async Task<IEnumerable<Issue>> GetOpenIssues()
         {
             return await _dbContext.Issues
                 .Where(x => (x.Status == IssueStatusEnum.Open || x.Status == IssueStatusEnum.InProgress))
                 .Include(x => x.Department)
                 .Include(x => x.Creator)
+                .OrderByDescending(x => x.Modified.Date)
                 .ToListAsync();
         }
 
@@ -55,7 +69,6 @@ namespace IssueTracker.Data.Repository
             await _dbContext.SaveChangesAsync();
 
             return issue;
-
         }
     }
 }

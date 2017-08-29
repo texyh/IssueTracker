@@ -17,5 +17,7 @@ namespace IssueTracker.Core.Interfaces
         Task<SaveIssueViewModel> GetIssue(long issueId);
 
         Task<Issue> SaveIssue(Issue issue);
+
+        Task<IEnumerable<Issue>> CurentUserIssues();
     }
 }
