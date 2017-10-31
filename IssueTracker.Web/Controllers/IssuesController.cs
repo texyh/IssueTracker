@@ -51,6 +51,13 @@ namespace IssueTracker.Web.Controllers
             return PartialView("IssueTable", issues);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> AssignedIssue()
+        {
+            var issues = await _issueService.AssignedIssues();
+            return PartialView("IssueTable", issues);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Issue(SaveIssueViewModel issue)

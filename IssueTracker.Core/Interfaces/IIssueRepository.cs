@@ -20,5 +20,8 @@ namespace IssueTracker.Core.Interfaces
         Task<Issue> UpdateIssue(Issue issue);
 
         Task<IEnumerable<Issue>> CurrentUserIssues(Guid userId);
+
+        Task<IEnumerable<Issue>> AssignedIssues(Guid userId);
+
     }
 }

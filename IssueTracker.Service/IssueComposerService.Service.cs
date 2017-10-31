@@ -29,10 +29,22 @@ namespace IssueTracker.Service
             _issueMailer = issueMailer;
         }
 
+        public async Task<IEnumerable<Issue>> AssignedIssues(Guid? userId)
+        {
+            if(!userId.HasValue)
+            {
+                userId = _userContext.GetUserId();
+            }
+
+            return await _issueRepository.AssignedIssues(userId.Value);
+        }
+
         public async Task<IEnumerable<Issue>> CurentUserIssues()
         {
             var userId = _userContext.GetUserId();
+
             return await _issueRepository.CurrentUserIssues(userId);
+
         }
 
         public async Task<IEnumerable<Issue>> GetClosedIssues()
@@ -43,9 +55,10 @@ namespace IssueTracker.Service
         public async Task<SaveIssueViewModel> GetIssue(long issueId)
         {
             var departments = await _departmentRepository.GetDepartments();
-            var issue = new SaveIssueViewModel();
-            issue.Departments = departments;
-
+            var issue = new SaveIssueViewModel()
+            {
+                Departments = departments
+            };
             if (issueId == default(long))
             {
                 issue.ToViewModel(new Issue());

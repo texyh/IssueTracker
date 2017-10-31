@@ -19,5 +19,7 @@ namespace IssueTracker.Core.Interfaces
         Task<Issue> SaveIssue(Issue issue);
 
         Task<IEnumerable<Issue>> CurentUserIssues();
+
+        Task<IEnumerable<Issue>> AssignedIssues(Guid? userId = null);
     }
 }

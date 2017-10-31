@@ -9,6 +9,7 @@ app.issue = app.issue || {};
         $('#raised-issues').click(handleIssue);
         $('#closed-issues').click(handleIssue);
         $('#my-issues').click(handleIssue);
+        $('#assigned-issues').click(handleIssue);
     };
 
     function handleIssue(e) {

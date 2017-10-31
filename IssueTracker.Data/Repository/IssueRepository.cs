@@ -19,10 +19,20 @@ namespace IssueTracker.Data.Repository
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<Issue>> AssignedIssues(Guid userId)
+        {
+            return await _dbContext.Issues
+                                   .Where(x => x.ResolverId == userId && (x.Status == IssueStatusEnum.Open || x.Status == IssueStatusEnum.InProgress))
+                                   .Include(x => x.Creator)
+                                   .Include(x => x.Department)
+                                   .OrderByDescending(x => x.Modified.Date)
+                                   .ToListAsync();
+        }
+
         public async Task<IEnumerable<Issue>> CurrentUserIssues(Guid userId)
         {
             return await _dbContext.Issues
-                        .Where(x => x.CreatorId == userId)
+                        .Where(x => x.CreatorId == userId && (x.Status == IssueStatusEnum.Open || x.Status == IssueStatusEnum.InProgress))
                         .Include(x => x.Creator)
                         .Include(x => x.Department)
                         .OrderByDescending(x => x.Modified.Date)
